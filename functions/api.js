@@ -36,8 +36,6 @@ router.get("/apmc-amreli", function (req, res) {
             // get the value of current date in #hp element
             const date = $("#hp").val();
 
-            APMCdata.push({ date: date, });
-
             // get value of productname class, list of all product names
             $(".productname").each(function (i, element) {
                 const productName = $(this).text();
@@ -62,6 +60,8 @@ router.get("/apmc-amreli", function (req, res) {
                 APMCdata[i].maxPrice = maxPrices[j + 1];
                 j = j + 2;
             }
+
+            APMCdata.push({ date: date });
 
             // send data in json format
             res.send(JSON.stringify(APMCdata));
