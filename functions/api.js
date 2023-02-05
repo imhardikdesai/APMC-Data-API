@@ -17,14 +17,16 @@ app.use((req, res, next) => {
 
 router.get('/', (req, res) => {
     res.send({
-        "Welcome to APMC Amreli API": "https://apmcamreli.com/rate.php",
-        "API": "https://apmcamreli.com/.netlify/functions/api/apmc-amreli"
+        "Welcome to APMC Data API": "🙏🏻🙏🏻🙏🏻",
+        "APMC Amreli": "https://apmc-market.netlify.app/amreli",
+        "Rajkot Amreli": "https://apmc-market.netlify.app/rajkot"
 
     })
 })
 
+// Router for APMC Amreli
 
-router.get("/apmc-amreli", function (req, res) {
+router.get("/amreli", function (req, res) {
     request(url, function (error, response, html) {
         if (!error) {
             const $ = cheerio.load(html);
@@ -65,10 +67,25 @@ router.get("/apmc-amreli", function (req, res) {
 
             // send data in json format
             res.send(JSON.stringify(APMCdata));
-
         }
     });
 });
+
+// Router for Rajkot APMC 
+
+router.get("/rajkot", function (req, res) {
+    request('http://www.apmcrajkot.com/daily_rates', function (error, response, html) {
+        if (!error) {
+            const $ = cheerio.load(html)
+            let strongTagValues = []
+            $('strong').each((i, element) => {
+                strongTagValues.push($(element).text())
+            })
+            res.send(strongTagValues)
+        }
+    });
+});
+
 
 app.use('/', router)
 
